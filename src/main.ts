@@ -51,8 +51,6 @@ function stringifyGame(game: number[]): string {
     const args = minimist(process.argv.slice(2));
     const api = new Api();
 
-
-
     const n = args['n'] ?? 2;
     const k = args['k'] ?? 6;
     const threshold = args['t'] ?? 100;
@@ -60,7 +58,7 @@ function stringifyGame(game: number[]): string {
     const type = args['type'] ?? 'megasena'
     
     console.log(` 🔎 Buscando jogo mais recente.`);
-    const latestGame = await api.getLatest('megasena');
+    const latestGame = await api.getLatest(type);
 
     const from = args['from'] ?? latestGame.id;
     const to = args['to'] ?? from - 5;
@@ -68,7 +66,7 @@ function stringifyGame(game: number[]): string {
     console.log(' 🚀 Iniciando processo de aquisição de dados.');
     console.log(` 📌 Usando jogos de ${from} até ${to}`);
 
-    const games = await api.getMultiple(from, to, batchSize, 'megasena');
+    const games = await api.getMultiple(from, to, batchSize, type);
     const { top6, bottom6, stats } = getStats(games);
 
     console.log(`\n ✔️ Finalizado a aquisição dos dados.\n`);
